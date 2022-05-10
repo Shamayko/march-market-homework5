@@ -77,16 +77,24 @@
         <tr>
             <td>Название</td>
             <td>Количество</td>
-            <td>Цена</td>
+            <td>Цена за шт.</td>
+            <td>Общая стоимость</td>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="ci in cart.items">
             <td>{{ci.productTitle}}</td>
-            <td>{{ci.quantity}}</td>
-            <td>{{ci.pricePerProduct + ' x ' + ci.quantity + ' = ' + ci.price}}</td>
+            <td><button type="button" class="btn btn-primary btn-sm" ng-click="deleteOneProductFromCart(ci.productId)">-
+            </button>
+                {{ci.quantity}}
+                <button type="button" class="btn btn-primary btn-sm" ng-click="addProductToCart(ci.productId)">+
+                </button>
+            </td>
+            <td>{{ci.pricePerProduct}}</td>
+            <td>{{ci.price}}</td>
         </tr>
         <tr>
+            <td></td>
             <td></td>
             <td>Итого:</td>
             <td>{{cart.totalPrice}}</td>
@@ -94,7 +102,16 @@
         </tbody>
     </table>
     <p></p>
-    <button class="btn btn-primary" ng-click="createOrder()">Оформить заказ</button>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
+
+        <button class="btn btn-primary" ng-click="createOrder()">Оформить заказ</button>
+    </div>
+
+
+
+
 
 <!--    <p></p>-->
 <!--    <h3>Добавить продукт</h3>-->
