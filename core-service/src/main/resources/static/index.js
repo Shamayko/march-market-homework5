@@ -69,8 +69,35 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
             });
     }
 
-    $scope.createOrder = function () {
+    $scope.addProductToCart = function (id){
+        $http.get('http://localhost:8190/market-cart/api/v1/cart/add/' + id)
+            .then(function (response){
+                $scope.loadCart();
+                });
+    }
 
+    $scope.deleteOneProductFromCart = function (productId){
+        $http.get('http://localhost:8190/market-cart/api/v1/cart/remove/' + productId)
+            .then(function (response){
+            $scope.loadCart();
+            console.log(response);
+        })
+    }
+
+    $scope.clearCart = function (){
+        $http.get('http://localhost:8190/market-cart/api/v1/cart/clear')
+            .then(function (response){
+                $scope.loadCart();
+                console.log(response);
+            })
+    }
+
+    $scope.createOrder = function (){
+        $http.post('http://localhost:8189/market-core/api/v1/orders')
+            .then(function (response){
+                console.log(response);
+                alert("Заказ сформирован. Спасибо, что выбираете Geekbrains!");
+            })
     }
 
     // $scope.deleteProduct = function (id) {
