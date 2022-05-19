@@ -30,4 +30,12 @@ public class CartService {
         ProductDto p = productServiceIntegration.findById(productId);
         cart.add(p);
     }
+
+    public void removeById(Long id) {
+        cart.deleteProductFormCart(id);
+    }
+
+    public void clearCart(){
+        cart.clear();
+    }
 }
