@@ -18,18 +18,18 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     }
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:8189/market-core/auth', $scope.user)
-            .then(function successCallback(response) {
-                if (response.data.token) {
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.marchMarketUser = {username: $scope.user.username, token: response.data.token};
+           $http.post('http://localhost:5555/auth/authenticate', $scope.user)
+               .then(function successCallback(response) {
+                   if (response.data.token) {
+                       $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                       $localStorage.marchMarketUser = {username: $scope.user.username, token: response.data.token};
 
-                    $scope.user.username = null;
-                    $scope.user.password = null;
-                }
-            }, function errorCallback(response) {
-            });
-    };
+                       $scope.user.username = null;
+                       $scope.user.password = null;
+                   }
+               }, function errorCallback(response) {
+               });
+       };
 
     $scope.tryToLogout = function () {
         $scope.clearUser();
@@ -49,35 +49,35 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     };
 
     $scope.loadProducts = function () {
-        $http.get('http://localhost:8189/market-core/api/v1/products')
-            .then(function (response) {
-                $scope.products = response.data;
-            });
-    };
+            $http.get('http://localhost:5555/core/api/v1/products')
+                .then(function (response) {
+                    $scope.products = response.data;
+                });
+        };
 
-    $scope.loadCart = function () {
-        $http.get('http://localhost:8190/market-cart/api/v1/cart')
-            .then(function (response) {
-                $scope.cart = response.data;
-            });
-    };
+        $scope.loadCart = function () {
+            $http.get('http://localhost:5555/cart/api/v1/cart')
+                .then(function (response) {
+                    $scope.cart = response.data;
+                });
+        };
 
     $scope.addToCart = function (id) {
-        $http.get('http://localhost:8190/market-cart/api/v1/cart/add/' + id)
+        $http.get('http://localhost:5555/cart/api/v1/cart/add/' + id)
             .then(function (response) {
                 $scope.loadCart();
             });
     }
 
     $scope.addProductToCart = function (id){
-        $http.get('http://localhost:8190/market-cart/api/v1/cart/add/' + id)
+        $http.get('http://localhost:5555/cart/api/v1/cart/add/' + id)
             .then(function (response){
                 $scope.loadCart();
                 });
     }
 
     $scope.deleteOneProductFromCart = function (productId){
-        $http.get('http://localhost:8190/market-cart/api/v1/cart/remove/' + productId)
+        $http.get('http://localhost:5555/cart/api/v1/cart/remove/' + productId)
             .then(function (response){
             $scope.loadCart();
             console.log(response);
@@ -85,7 +85,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     }
 
     $scope.clearCart = function (){
-        $http.get('http://localhost:8190/market-cart/api/v1/cart/clear')
+        $http.get('http://localhost:5555/cart/api/v1/cart/clear')
             .then(function (response){
                 $scope.loadCart();
                 console.log(response);
@@ -93,7 +93,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     }
 
     $scope.createOrder = function (){
-        $http.post('http://localhost:8189/market-core/api/v1/orders')
+        $http.post('http://localhost:5555/core/api/v1/orders')
             .then(function (response){
                 console.log(response);
                 alert("Заказ сформирован. Спасибо, что выбираете Geekbrains!");

@@ -1,7 +1,6 @@
 package ru.geekbrains.march.market.core.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.march.market.api.CartDto;
 import ru.geekbrains.march.market.api.CartItemDto;
@@ -17,21 +16,20 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-    private final UserService userService;
     private final CartServiceIntegration cartServiceIntegration;
     private final OrderRepository orderRepository;
     private final ProductService productService;
 
 
     public void createOrder(String username) {
-        if (username != null) {
-            CartDto cartDto = cartServiceIntegration.getCurrentCart();
-            Order order = new Order();
-            order.setTotalPrice(cartDto.getTotalPrice());
-            order.setUser(userService.findIdByUsername(username));
-            order.setItems(parseCartItems(cartDto.getItems(), order));
-            orderRepository.save(order);
-        } else throw new UsernameNotFoundException("Вы не авторизованы");
+
+        CartDto cartDto = cartServiceIntegration.getCurrentCart();
+        Order order = new Order();
+        order.setTotalPrice(cartDto.getTotalPrice());
+        order.setUsername(username);
+        order.setItems(parseCartItems(cartDto.getItems(), order));
+        orderRepository.save(order);
+
     }
 
     public List<OrderItem> parseCartItems(List<CartItemDto> list, Order order) {
@@ -47,13 +45,7 @@ public class OrderService {
             orderItem.setOrder(order);
             listOrderItems.add(orderItem);
         }
-    return listOrderItems;
+        return listOrderItems;
 
     }
 }
-
-
-
-
-
-
