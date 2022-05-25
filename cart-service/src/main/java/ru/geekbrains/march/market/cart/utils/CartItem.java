@@ -20,4 +20,10 @@ public class CartItem {
         quantity++;
         price = price.add(pricePerProduct);
     }
+
+    public void decrementQuantity(){
+        quantity--;
+        price = price.subtract(pricePerProduct);
+
+    }
 }
